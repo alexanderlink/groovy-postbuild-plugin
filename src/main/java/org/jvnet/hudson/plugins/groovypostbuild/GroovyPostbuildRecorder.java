@@ -26,13 +26,22 @@ package org.jvnet.hudson.plugins.groovypostbuild;
 import groovy.lang.GroovyShell;
 import hudson.AbortException;
 import hudson.Launcher;
-import hudson.model.*;
+import hudson.model.Action;
+import hudson.model.BuildListener;
+import hudson.model.Result;
+import hudson.model.AbstractBuild;
+import hudson.model.AbstractProject;
+import hudson.model.Hudson;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
 import hudson.util.IOUtils;
-import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -43,6 +52,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import org.kohsuke.stapler.DataBoundConstructor;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
@@ -168,6 +179,12 @@ public class GroovyPostbuildRecorder extends Recorder {
 		public void buildSuccess() {
 			build.setResult(Result.SUCCESS);
 		}
+    public void buildAborted() {
+      build.setResult(Result.ABORTED);
+    }
+    public void buildNotBuilt() {
+      build.setResult(Result.NOT_BUILT);
+    }
 
 		public void buildScriptFailed(Exception e) {
 			StringWriter writer = new StringWriter();
