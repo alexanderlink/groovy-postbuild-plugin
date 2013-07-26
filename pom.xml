@@ -23,6 +23,10 @@
         <name>Serban Iordache</name>
       </developer>
     </developers>
+
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
     
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/groovy-postbuild-plugin.git</connection>
